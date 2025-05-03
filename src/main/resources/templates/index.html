@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FURIA CS Chat</title>
+    <style>
+        body {
+            background-color: #0f0f0f;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        h1 {
+            color: #00ffcc;
+        }
+        textarea, button {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #00ffcc;
+            color: #000;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .response {
+            margin-top: 2rem;
+            white-space: pre-wrap;
+            background: #1a1a1a;
+            padding: 1rem;
+            border-radius: 8px;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+<h1>Chat Fã - FURIA CS:GO</h1>
+<p>Envie sua pergunta sobre o time de CS:GO da FURIA:</p>
+<textarea id="prompt" rows="4" placeholder="Ex: Quando é o próximo jogo da FURIA?"></textarea>
+<button onclick="enviarPergunta()">Enviar</button>
+
+<div class="response" id="resposta"></div>
+
+<script>
+    async function enviarPergunta() {
+        const prompt = document.getElementById("prompt").value;
+        const respostaDiv = document.getElementById("resposta");
+        respostaDiv.innerText = "Carregando resposta...";
+
+        const resposta = await fetch("http://localhost:8080/api/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ prompt })
+        });
+
+        const resultado = await resposta.text();
+        respostaDiv.innerText = resultado;
+    }
+</script>
+</body>
+</html>
